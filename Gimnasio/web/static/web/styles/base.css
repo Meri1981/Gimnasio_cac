@@ -1,0 +1,32 @@
+.logo{
+    width: 80px;
+}
+
+main{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh ;
+    padding: 15px 10px;
+    
+}
+
+
+.centrado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+footer {
+    background-color: darkorange;
+    color: black;
+    display: flex;
+    flex-direction: column;
+   
+}
+
+.parrafo_footer{
+    padding: 25px 0;
+}

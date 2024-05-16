@@ -1,0 +1,13 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block titulo %}Gimnasio CAC{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'web/styles/index.css' %}">
+{% endblock %}
+
+{% block main %}
+<h1>{{gimnasio}}</h1>
+
+{% endblock %}

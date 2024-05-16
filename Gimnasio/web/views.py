@@ -5,7 +5,10 @@ from .forms import *
 
 # Create your views here.
 def index(request):
-    return render(request, "web/base.html")
+    context = {
+         'gimnasio' : 'Gimnasio CAC'
+    }
+    return render(request, "web/index.html", context)
 
 def registrarse(request):
     contexto ={}

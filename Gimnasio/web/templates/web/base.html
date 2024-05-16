@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block titulo%}{%endblock%}</title>
+
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <header>
+      <h1 style="background: red">Hol Gimnasio cac</h1>
+    </header>
+    <main>{% block main %}{% endblock%}</main>
+    <footer style="background: rgb(0, 255, 47)">
+      <p>Gimnasio CAC - derechos reservados</p>
+    </footer>
+  </body>
+</html>

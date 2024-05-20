@@ -1,0 +1,30 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block titulo %}
+    Gestión de clases
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'web/styles/clases.css' %}">
+{% endblock %}
+
+{% block main %}
+
+<h2>Clase</h2>
+<div class="container">
+    <div class="col-6">
+        <form action="" method="post">
+            {% csrf_token %}
+            {{clase_form}}
+            <div class="d-flex justify-content-center gap-1 m-3">
+                <input type="button" value="Aceptar" class="btn btn-secondary">
+                <input type="button" value="Cancelar" class="btn btn-secondary">
+                {% if clase_form.id.value != None%}
+                    <input type="button" value="Eliminar" class="btn btn-danger">
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

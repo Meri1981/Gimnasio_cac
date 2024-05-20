@@ -2,6 +2,25 @@
     width: 80px;
 }
 
+header .messages {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    list-style-type: none;
+    
+    
+}
+
+header .messages .success {
+    background-color: rgba(0,255,0,0.5);
+    padding: 15px;
+    color: white;
+    border-radius: 5px;
+    border: solid 5px white;
+    
+}
+
+
 main{
     display: flex;
     flex-direction: column;
@@ -20,8 +39,8 @@ main{
 
 
 footer {
-    background-color: darkorange;
-    color: black;
+    background-color: black;
+    color: gray;
     display: flex;
     flex-direction: column;
    

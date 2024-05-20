@@ -18,7 +18,8 @@
   <header>
     <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
       <div class="container-fluid">
-        <a class="navbar-brand" href="{% url 'index' %}"><img class="logo" src="{% static 'web/img/logo.jpeg' %}" alt="logo"> </a>
+        <a class="navbar-brand" href="{% url 'index' %}"><img class="logo" src="{% static 'web/img/logo.jpeg' %}"
+            alt="logo"> </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#collapsibleNavbar">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -40,6 +41,13 @@
         </div>
       </div>
     </nav>
+    {% if messages %}
+    <ul class="messages">
+      {% for message in messages %}
+      <li {% if message.tags %} class="{{message.tags}}" {%endif%}> {{message}}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
 
 
   </header>
@@ -50,8 +58,8 @@
   </main>
 
   <footer class="centrado">
-    
-    
+
+
     <p class="parrafo_footer">Gimnasio CAC - Todos los derechos reservados</p>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
@@ -60,11 +68,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-

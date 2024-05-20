@@ -1,9 +1,21 @@
-{% extends "web/base.html" %} {% load static %} {% block main %}
+{% extends "web/base.html" %} 
+{% load static %} 
 
-<h2>Registrarse</h2>
-<form method="POST" action="{% url 'registrarse' %}">
-  {% csrf_token %} {{ registrarse_form }}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'web/styles/registrarse.css' %}">
+{% endblock %}
 
-  <input type="submit" />
+
+
+{% block main %}
+
+<h2 class="centrado">Registrarse</h2>
+<form method="POST" action="{% url 'registrarse' %}" class="container">
+  {% csrf_token %}
+  {{ registrarse_form }}
+
+
+  <button class="registerbtn" type="submit">Enviar</button>
+ 
 </form>
 {% endblock %}

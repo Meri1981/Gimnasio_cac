@@ -1,0 +1,21 @@
+{% extends 'web/base.html' %} {% load static %} {% block titulo %} Gestión de
+socios {% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'web/styles/socios.css' %}" />
+{% endblock %} {% block main %}
+
+<h2>Socio</h2>
+<div class="container">
+  <div class="col-6">
+    <form action="" method="post">
+      {% csrf_token %} {{socio_form}}
+      <div class="d-flex justify-content-center gap-1 m-3">
+        <input type="button" value="Aceptar" class="btn btn-secondary" />
+        <input type="button" value="Cancelar" class="btn btn-secondary" />
+        {% if socio_form.id.value != None%}
+        <input type="button" value="Eliminar" class="btn btn-danger" />
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

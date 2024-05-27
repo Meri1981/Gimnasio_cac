@@ -1,0 +1,35 @@
+{% extends 'web/base.html' %} {% load static %} {% block titulo %} Gestión de
+socios {% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'web/styles/clases.css' %}" />
+{% endblock %} {% block main %}
+
+<h2>Gestión de socios</h2>
+
+<a href="{% url 'crud_socio' %}">Nuevo socio</a>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Socio</th>
+      <th scope="col">Dni</th>
+      <th scope="col">Email</th>
+      <th scope="col">Plan</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for socio in socios %}
+    <tr>
+      <th scope="row">
+        <a href="{% url 'crud_socio' socio.id %}">{{socio.id}}</a>
+      </th>
+      <td>{{socio.nombre}}</td>
+      <td>{{socio.dni}}</td>
+      <td>{{socio.email}}</td>
+      <td>{{socio.plan}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

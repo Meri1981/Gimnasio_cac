@@ -14,12 +14,12 @@
 <h2>Clase</h2>
 <div class="container">
     <div class="col-6">
-        <form action="" method="post">
+        <form action="{% url 'crud_clase' %}" method="post">
             {% csrf_token %}
             {{clase_form}}
             <div class="d-flex justify-content-center gap-1 m-3">
-                <input type="button" value="Aceptar" class="btn btn-secondary">
-                <input type="button" value="Cancelar" class="btn btn-secondary">
+                <input type="submit" value="Aceptar" class="btn btn-secondary">
+                <input type="button" value="Cancelar" class="btn btn-secondary" onclick="window.location.href='{% url "clases" %}'">
                 {% if clase_form.id.value != None%}
                     <input type="button" value="Eliminar" class="btn btn-danger">
                 {% endif %}

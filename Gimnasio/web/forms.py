@@ -47,7 +47,7 @@ class RegistrarseForm(forms.Form):
           return self.cleaned_data
 
 class ClaseForm(forms.Form):
-    id = forms.IntegerField(label='id')
+    id = forms.IntegerField(label='id', required=False)
     id.widget.attrs.update({'readonly':True, 'class': "form-control"})
     nombre = forms.CharField(label='Nombre', required=True)
     nombre.widget.attrs.update({'class': 'form-control'})
@@ -57,4 +57,11 @@ class ClaseForm(forms.Form):
     cupo.widget.attrs.update({'class': 'form-control'})
     horario = forms.CharField(label="Horario", help_text="Horarios de la clase")
     horario.widget.attrs.update({'class': 'form-control'})
+
+    def clean_cupo(self):
+        cupo = self.cleaned_data.get('cupo')
+        if cupo > 15:
+            raise ValidationError('Las clases deben tener 15 integrantes como máximo')
+        
+        return cupo
 

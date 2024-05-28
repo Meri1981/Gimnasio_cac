@@ -46,5 +46,8 @@ def crud_clase(request, idClase = None):
             contexto['clase_form'] = ClaseForm({"id": 1, "nombre": "Cross fit", "profesor": "Juan Pérez", "cupo": 12, "horario": "LU-MI-VI 20hs."})
     else:
         contexto['clase_form'] = ClaseForm(request.POST)
+        if contexto['clase_form'].is_valid():
+            messages.success(request,"Clase creada correctamente")
+            return redirect('clases')
     
     return render(request, 'web/crud_clase.html', contexto)

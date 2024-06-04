@@ -73,12 +73,9 @@ def crud_clase(request, idClase=None):
                 }
             )
     else:
-        contexto['clase_form'] = ClaseForm(request.POST)
-        if contexto['clase_form'].is_valid():
-            messages.success(request,"Clase creada correctamente")
-            return redirect('clases')
-    
-    return render(request, 'web/crud_clase.html', contexto)
+        contexto["clase_form"] = ClaseForm(request.POST)
+
+    return render(request, "web/crud_clase.html", contexto)
 
 
 def lista_socios(request):

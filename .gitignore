@@ -1,4 +1,5 @@
 GimnasioVenv
+Gimnasio\Gimnasio\config.env
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

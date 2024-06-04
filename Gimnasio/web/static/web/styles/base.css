@@ -12,9 +12,9 @@ header .messages {
 }
 
 header .messages .success {
-    background-color: rgba(0,255,0,0.5);
+    background: linear-gradient(to top, #ffa500, #f4f4f4, #00bfff);
     padding: 15px;
-    color: white;
+    color: rgb(21, 20, 20);
     border-radius: 5px;
     border: solid 5px white;
     
@@ -26,6 +26,7 @@ main{
     flex-direction: column;
     min-height: 100vh ;
     padding: 15px 10px;
+    background: linear-gradient(to top, #ffa500, #f4f4f4, #00bfff);
     
 }
 

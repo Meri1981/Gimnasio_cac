@@ -1,0 +1,39 @@
+body {
+    background: linear-gradient(to top, #ffa500, #f4f4f4, #00bfff);
+
+}
+
+main {
+
+    background-image: url("../img/gym.jpg");
+    background-size: contain;
+    background-position: top;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100vh
+}
+
+
+h1 {
+
+    animation: moverIzquierdaADerecha 12s linear infinite;
+    animation-direction: normal;
+}
+
+@keyframes moverIzquierdaADerecha {
+    0% {
+        transform: translateX(0);
+        color: #ffa500;
+    }
+
+    50% {
+        
+        color: #00bfff;
+    }
+
+    100% {
+        transform: translateX(100vw);
+        color: #ffa500;
+    }
+
+}

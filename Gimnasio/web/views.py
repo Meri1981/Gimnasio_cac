@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .forms import *
 from django.shortcuts import redirect
 from django.contrib import messages
+from web.models import Clase
 
 
 # Create your views here.
@@ -29,29 +30,7 @@ def registrarse(request):
 def lista_clases(request):
     # Gestión de clases. Listado con funcionalidad para agregar, modificar y eliminar clases.
     contexto = {
-        "clases": [
-            {
-                "id": 1,
-                "nombre": "Cross fit",
-                "profesor": "Juan Pérez",
-                "cupo": 12,
-                "horario": "LU-MI-VI 20hs.",
-            },
-            {
-                "id": 2,
-                "nombre": "Pilates",
-                "profesor": "Matilde Pilate",
-                "cupo": 10,
-                "horario": "LU-MI-VI 10hs.",
-            },
-            {
-                "id": 3,
-                "nombre": "Spinning",
-                "profesor": "Ramón Valdez",
-                "cupo": 20,
-                "horario": "MA-JU 19hs.",
-            },
-        ]
+        "clases": Clase.objects.all().values()
     }
 
     return render(request, "web/clases.html", contexto)
@@ -63,17 +42,29 @@ def crud_clase(request, idClase=None):
         if idClase == None:
             contexto["clase_form"] = ClaseForm()
         else:
+            clase = Clase.objects.filter(id=idClase).values()[0]
             contexto["clase_form"] = ClaseForm(
                 {
-                    "id": 1,
-                    "nombre": "Cross fit",
-                    "profesor": "Juan Pérez",
-                    "cupo": 12,
-                    "horario": "LU-MI-VI 20hs.",
+                    "id": int(clase['id']),
+                    "nombre": clase['nombre'],
+                    "profesor": clase['profesor'],
+                    "cupo": int(clase['cupo']),
+                    "horario": clase['horarios'],
                 }
             )
     else:
-        contexto["clase_form"] = ClaseForm(request.POST)
+        form = ClaseForm(request.POST)
+        contexto["clase_form"] = form
+        if form.is_valid():
+            clase = Clase()
+            clase.nombre = form.cleaned_data['nombre']
+            clase.profesor = form.cleaned_data['profesor']
+            clase.cupo = form.cleaned_data['cupo']
+            clase.horarios = form.cleaned_data['horario']
+            clase.save()
+            messages.success(request, "Se ha creado la clase")
+
+            return redirect("index")
 
     return render(request, "web/crud_clase.html", contexto)
 

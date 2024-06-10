@@ -3,7 +3,9 @@ from django.http import HttpResponse
 from .forms import *
 from django.shortcuts import redirect
 from django.contrib import messages
-from web.models import Clase
+from web.models import Clase, Inscripcion
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.urls import reverse_lazy
 
 
 # Create your views here.
@@ -119,3 +121,25 @@ def crud_socio(request, idSocio=None):
         contexto["socio_form"] = SocioForm(request.POST)
 
     return render(request, "web/crud_socio.html", contexto)
+
+class InscripcionListView(ListView):
+    model = Inscripcion
+    template_name = "web/listado_inscripcion.html"
+
+class InscripcionCreateView(CreateView):
+    model = Inscripcion
+    form_class = InscripcionForm
+    template_name = "web/inscripcion_form.html"
+    success_url = reverse_lazy("listado_inscripcion")
+
+class InscripcionUpdateView(UpdateView):
+    model = Inscripcion
+    form_class = InscripcionForm
+    template_name = "web/inscripcion_form.html"
+    success_url = reverse_lazy("listado_inscripcion")
+
+class InscripcionDeleteView(DeleteView):
+    model = Inscripcion
+    template_name = "web/inscripcion_confirm_delete.html"
+    success_url = reverse_lazy("listado_inscripcion")
+

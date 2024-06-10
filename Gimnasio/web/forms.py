@@ -1,6 +1,7 @@
 from django import forms
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
+from .models import Inscripcion, Clase, Socio
 
 
 class RegistrarseForm(forms.Form):
@@ -100,3 +101,11 @@ class SocioForm(forms.Form):
             raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
 
         return self.cleaned_data["Dni"]
+    
+class InscripcionForm(forms.ModelForm):
+    clase = forms.ModelChoiceField(queryset=Clase.objects.all(), label="Clase")
+    socio = forms.ModelChoiceField(queryset=Socio.objects.all(), label="Socio")
+
+    class Meta:
+        model = Inscripcion
+        fields = ['clase', 'socio']

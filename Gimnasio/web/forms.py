@@ -50,22 +50,27 @@ class RegistrarseForm(forms.Form):
 
 
 class ClaseForm(forms.Form):
-    id = forms.IntegerField(label='id', required=False)
-    id.widget.attrs.update({'readonly':True, 'class': "form-control"})
-    nombre = forms.CharField(label='Nombre', required=True)
-    nombre.widget.attrs.update({'class': 'form-control'})
-    profesor = forms.CharField(label='Profesor', required=True)
-    profesor.widget.attrs.update({'class': 'form-control'})
-    cupo = forms.IntegerField(label='Cupo', required=True, min_value=0, help_text="Cantidad de alumnos máximo por clase")
-    cupo.widget.attrs.update({'class': 'form-control'})
+    id = forms.IntegerField(label="id", required=False)
+    id.widget.attrs.update({"readonly": True, "class": "form-control"})
+    nombre = forms.CharField(label="Nombre", required=True)
+    nombre.widget.attrs.update({"class": "form-control"})
+    profesor = forms.CharField(label="Profesor", required=True)
+    profesor.widget.attrs.update({"class": "form-control"})
+    cupo = forms.IntegerField(
+        label="Cupo",
+        required=True,
+        min_value=0,
+        help_text="Cantidad de alumnos máximo por clase",
+    )
+    cupo.widget.attrs.update({"class": "form-control"})
     horario = forms.CharField(label="Horario", help_text="Horarios de la clase")
     horario.widget.attrs.update({"class": "form-control"})
 
     def clean_cupo(self):
-        cupo = self.cleaned_data.get('cupo')
+        cupo = self.cleaned_data.get("cupo")
         if cupo > 15:
-            raise ValidationError('Las clases deben tener 15 integrantes como máximo')
-        
+            raise ValidationError("Las clases deben tener 15 integrantes como máximo")
+
         return cupo
 
 
@@ -74,9 +79,24 @@ class SocioForm(forms.Form):
     id.widget.attrs.update({"readonly": True, "class": "form-control"})
     nombre = forms.CharField(label="Nombre", required=True)
     nombre.widget.attrs.update({"class": "form-control"})
-    dni = forms.CharField(label="Dni", required=True)
+    dni = forms.IntegerField(label="Dni", required=True)
     dni.widget.attrs.update({"class": "form-control"})
     email = forms.CharField(label="Email", required=True)
     email.widget.attrs.update({"class": "form-control"})
     plan = forms.CharField(label="Plan")
     plan.widget.attrs.update({"class": "form-control"})
+
+    def clean_nombre(self):
+        if not self.cleaned_data["nombre"].isalpha():
+            raise ValidationError("El nombre solo puede estar compuesto por letras")
+
+        return self.cleaned_data["nombre"]
+
+    def clean_dni(self):
+        if not self.cleaned_data["Dni"].isalpha():
+            raise ValidationError("El DNI solo puede estar compuesto por números")
+        
+        if not (1000000 <= self.cleaned_data["dni"] < 100000000):
+            raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
+
+        return self.cleaned_data["Dni"]

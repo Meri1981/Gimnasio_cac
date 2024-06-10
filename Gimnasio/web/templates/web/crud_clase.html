@@ -21,7 +21,7 @@
                 <input type="submit" value="Aceptar" class="btn btn-secondary">
                 <input type="button" value="Cancelar" class="btn btn-secondary" onclick="window.location.href='{% url "clases" %}'">
                 {% if clase_form.id.value != None%}
-                    <input type="button" value="Eliminar" class="btn btn-danger">
+                    <input type="button" value="Eliminar" class="btn btn-danger" onclick="window.location.href='{% url "crud_clase" clase_form.id.value 1 %}'">
                 {% endif %}
             </div>
         </form>

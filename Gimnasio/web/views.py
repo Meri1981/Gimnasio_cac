@@ -36,8 +36,15 @@ def lista_clases(request):
     return render(request, "web/clases.html", contexto)
 
 
-def crud_clase(request, idClase=None):
+def crud_clase(request, idClase=None, eliminar=None):
     contexto = {}
+    if eliminar:
+        clase = Clase.objects.get(id=idClase)
+        clase.delete()
+        messages.success(request, "Se ha eliminado la Clase")
+        
+        return redirect("clases")
+
     if request.method == "GET":
         if idClase == None:
             contexto["clase_form"] = ClaseForm()
@@ -56,15 +63,21 @@ def crud_clase(request, idClase=None):
         form = ClaseForm(request.POST)
         contexto["clase_form"] = form
         if form.is_valid():
-            clase = Clase()
+            #Si tiene un ID, es una actualización.
+            if form.cleaned_data['id'] != None:
+                clase = Clase.objects.get(id=form.cleaned_data['id'])
+                mensaje = "Se ha actualizado la clase"
+            else:
+                clase = Clase()
+                mensaje = "Se ha creado la clase"
             clase.nombre = form.cleaned_data['nombre']
             clase.profesor = form.cleaned_data['profesor']
             clase.cupo = form.cleaned_data['cupo']
             clase.horarios = form.cleaned_data['horario']
             clase.save()
-            messages.success(request, "Se ha creado la clase")
+            messages.success(request, mensaje)
 
-            return redirect("index")
+            return redirect("clases")
 
     return render(request, "web/crud_clase.html", contexto)
 

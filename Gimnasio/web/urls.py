@@ -7,6 +7,7 @@ urlpatterns = [
     path("clases", views.lista_clases, name="clases"),
     path("clase", views.crud_clase, name="crud_clase"),
     path("clase/<int:idClase>", views.crud_clase, name="crud_clase"),
+    path("clase/<int:idClase>/<int:eliminar>", views.crud_clase, name="crud_clase"),
     path("socios", views.lista_socios, name="socios"),
     path("socio", views.crud_socio, name="crud_socio"),
     path("socio/<int:idSocio>", views.crud_socio, name="crud_socio"),

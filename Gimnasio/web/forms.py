@@ -100,11 +100,12 @@ class SocioForm(forms.Form):
     def clean_dni(self):
         dni = self.cleaned_data.get("dni")
 
-        if not (1000000 <= self.cleaned_data["dni"] < 100000000):
-            raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
+        if not hasattr(self, "instance"):
+            if not (1000000 <= self.cleaned_data["dni"] < 100000000):
+                raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
 
-        if Socio.objects.filter(dni=dni).exists():
-            raise ValidationError("El DNI ya está asociado a un socio.")
+            # if Socio.objects.filter(dni=dni).exists():
+            #    raise ValidationError("El DNI ya está asociado a un socio.")
 
         return dni
 

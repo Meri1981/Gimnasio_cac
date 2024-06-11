@@ -17,12 +17,13 @@ socios {% endblock %} {% block extra_css %}
           class="btn btn-secondary"
           onclick="window.location.href='{% url 'socios' %}'"
         />
+
         {% if socio_form.id.value != None%}
         <input
           type="button"
           value="Eliminar"
           class="btn btn-danger"
-          onclick="window.location.href='{% url 'crud_socio' socio_form.id.value 1 %}'"
+          onclick='window.location.href="{% url "crud_socio" socio_form.id.value 1 %}"'
         />
         {% endif %}
       </div>

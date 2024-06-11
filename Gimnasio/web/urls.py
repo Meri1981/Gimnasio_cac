@@ -16,7 +16,7 @@ urlpatterns = [
     path("clase/<int:idClase>/<int:eliminar>", views.crud_clase, name="crud_clase"),
     path("socios", views.lista_socios, name="socios"),
     path("socio", views.crud_socio, name="crud_socio"),
-    path("clase/<int:idSocio>", views.crud_socio, name="crud_socio"),
+    path("socio/<int:idSocio>", views.crud_socio, name="crud_socio"),
     path("socio/<int:idSocio>/<int:eliminar>", views.crud_socio, name="crud_socio"),
     path(
         "listado_inscripcion", InscripcionListView.as_view(), name="listado_inscripcion"

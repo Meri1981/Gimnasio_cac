@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from .forms import *
 from django.shortcuts import redirect
 from django.contrib import messages
-from web.models import Clase, Inscripcion
+from web.models import *
 from django.views.generic import (
     ListView,
     DetailView,
@@ -146,6 +146,67 @@ def crud_socio(request, idSocio=None, eliminar=None):
             return redirect("socios")
 
     return render(request, "web/crud_socio.html", contexto)
+
+
+def lista_profesores(request):
+    contexto = {"profesores": Profesor.objects.all().values()}
+
+    return render(request, "web/profesores.html", contexto)
+
+
+def crud_profesor(request, idProfesor=None, eliminar=None):
+    contexto = {}
+
+    if idProfesor:
+        try:
+            profesor = Profesor.objects.get(id=idProfesor)
+        except Profesor.DoesNotExist:
+            return redirect("profesores")
+
+        if eliminar:
+            profesor = Profesor.objects.get(id=idProfesor)
+            profesor.delete()
+            messages.success(request, "Se ha eliminado el Profesor")
+            return redirect("profesores")
+    else:
+        profesor = None
+
+    if request.method == "GET":
+        if idProfesor is None:
+            contexto["profesor_form"] = ProfesorForm()
+        else:
+            profesor = Profesor.objects.filter(id=idProfesor).values()[0]
+            contexto["profesor_form"] = ProfesorForm(
+                {
+                    "id": int(profesor["id"]),
+                    "nombre": profesor["nombre"],
+                    "dni": profesor["dni"],
+                    "email": profesor["email"],
+                    "telefono": profesor["telefono"],
+                }
+            )
+    else:
+        form = ProfesorForm(request.POST)
+        contexto["profesor_form"] = form
+        if form.is_valid():
+            if form.cleaned_data["id"] != None:
+                profesor = Profesor.objects.get(id=form.cleaned_data["id"])
+                mensaje = "Se ha actualizado el profesor"
+            else:
+                profesor = Profesor()
+                mensaje = "Se ha creado el profesor"
+
+            profesor.nombre = form.cleaned_data["nombre"]
+            profesor.dni = form.cleaned_data["dni"]
+            profesor.email = form.cleaned_data["email"]
+            profesor.telefono = form.cleaned_data["telefono"]
+            profesor.save()
+            messages.success(request, mensaje)
+
+            return redirect("profesores")
+
+    contexto["profesor"] = profesor
+    return render(request, "web/crud_profesor.html", contexto)
 
 
 class InscripcionListView(ListView):

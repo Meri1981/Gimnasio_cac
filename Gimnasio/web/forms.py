@@ -110,6 +110,31 @@ class SocioForm(forms.Form):
         return dni
 
 
+class ProfesorForm(forms.Form):
+    id = forms.IntegerField(label="id", required=False)
+    id.widget.attrs.update({"readonly": True, "class": "form-control"})
+    nombre = forms.CharField(label="Nombre", required=True)
+    nombre.widget.attrs.update({"class": "form-control"})
+    dni = forms.IntegerField(label="Dni", required=True)
+    dni.widget.attrs.update({"class": "form-control"})
+    email = forms.CharField(label="Email", required=True)
+    email.widget.attrs.update({"class": "form-control"})
+    telefono = forms.CharField(label="Telefono")
+    telefono.widget.attrs.update({"class": "form-control"})
+
+    def clean_dni(self):
+        dni = self.cleaned_data.get("dni")
+
+        if not hasattr(self, "instance"):
+            if not (1000000 <= self.cleaned_data["dni"] < 100000000):
+                raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
+
+            # if Socio.objects.filter(dni=dni).exists():
+            #    raise ValidationError("El DNI ya está asociado a un socio.")
+
+        return dni
+
+
 class InscripcionForm(forms.ModelForm):
     clase = forms.ModelChoiceField(queryset=Clase.objects.all(), label="Clase")
     socio = forms.ModelChoiceField(queryset=Socio.objects.all(), label="Socio")

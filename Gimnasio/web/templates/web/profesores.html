@@ -1,0 +1,35 @@
+{% extends 'web/base.html' %} {% load static %} {% block titulo %} Gestión de
+profesores {% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'web/styles/profesores.css' %}" />
+{% endblock %} {% block main %}
+
+<h2>Gestión de profesores</h2>
+
+<a href="{% url 'crud_profesor' %}">Nuevo profesor</a>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Profesor</th>
+      <th scope="col">Dni</th>
+      <th scope="col">Email</th>
+      <th scope="col">Telefono</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for profesor in profesores %}
+    <tr>
+      <th scope="row">
+        <a href="{% url 'crud_profesor' profesor.id %}">{{profesor.id}}</a>
+      </th>
+      <td>{{profesor.nombre}}</td>
+      <td>{{profesor.dni}}</td>
+      <td>{{profesor.email}}</td>
+      <td>{{profesor.telefono}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% endblock %}

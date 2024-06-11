@@ -18,6 +18,14 @@ urlpatterns = [
     path("socio", views.crud_socio, name="crud_socio"),
     path("socio/<int:idSocio>", views.crud_socio, name="crud_socio"),
     path("socio/<int:idSocio>/<int:eliminar>", views.crud_socio, name="crud_socio"),
+    path("profesores", views.lista_profesores, name="profesores"),
+    path("profesor", views.crud_profesor, name="crud_profesor"),
+    path("profesor/<int:idProfesor>", views.crud_profesor, name="crud_profesor"),
+    path(
+        "profesor/<int:idProfesor>/<int:eliminar>",
+        views.crud_profesor,
+        name="crud_profesor",
+    ),
     path(
         "listado_inscripcion", InscripcionListView.as_view(), name="listado_inscripcion"
     ),

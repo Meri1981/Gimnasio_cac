@@ -1,6 +1,7 @@
 from django import forms
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
+from .models import Inscripcion, Clase, Socio
 
 
 class RegistrarseForm(forms.Form):
@@ -75,7 +76,7 @@ class ClaseForm(forms.Form):
 
 
 class SocioForm(forms.Form):
-    id = forms.IntegerField(label="id")
+    id = forms.IntegerField(label="id", required=False)
     id.widget.attrs.update({"readonly": True, "class": "form-control"})
     nombre = forms.CharField(label="Nombre", required=True)
     nombre.widget.attrs.update({"class": "form-control"})
@@ -83,7 +84,11 @@ class SocioForm(forms.Form):
     dni.widget.attrs.update({"class": "form-control"})
     email = forms.CharField(label="Email", required=True)
     email.widget.attrs.update({"class": "form-control"})
-    plan = forms.CharField(label="Plan")
+    # plan = forms.CharField(label="Plan")
+    # plan.widget.attrs.update({"class": "form-control"})
+
+    PLANES = (("Premium", "Premium"), ("Standard", "Standard"), ("Basic", "Basic"))
+    plan = forms.ChoiceField(choices=PLANES)
     plan.widget.attrs.update({"class": "form-control"})
 
     def clean_nombre(self):
@@ -93,10 +98,21 @@ class SocioForm(forms.Form):
         return self.cleaned_data["nombre"]
 
     def clean_dni(self):
-        if not self.cleaned_data["Dni"].isalpha():
-            raise ValidationError("El DNI solo puede estar compuesto por números")
-        
+        dni = self.cleaned_data.get("dni")
+
         if not (1000000 <= self.cleaned_data["dni"] < 100000000):
             raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
 
-        return self.cleaned_data["Dni"]
+        if Socio.objects.filter(dni=dni).exists():
+            raise ValidationError("El DNI ya está asociado a un socio.")
+
+        return dni
+
+
+class InscripcionForm(forms.ModelForm):
+    clase = forms.ModelChoiceField(queryset=Clase.objects.all(), label="Clase")
+    socio = forms.ModelChoiceField(queryset=Socio.objects.all(), label="Socio")
+
+    class Meta:
+        model = Inscripcion
+        fields = ["clase", "socio"]

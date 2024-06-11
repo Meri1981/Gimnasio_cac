@@ -1,0 +1,35 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block titulo %}Listado de Inscripciones{% endblock %}
+
+{% block extra_css %}
+
+{% endblock %}
+
+
+{% block main %}
+  <h2>Listado de Inscripciones</h2> 
+  <table class="table table-striped">
+	<thead>
+  	<tr>
+    	<th>Clase</th>
+    	<th>Socio</th>
+    	<th>Acciones</th>
+  	</tr>
+	</thead>
+	<tbody>
+  	{% for inscripcion in object_list %}
+    	<tr>
+      	<td>{{ inscripcion.clase }}</td>
+      	<td>{{ inscripcion.socio }}</td>
+      	<td>
+        	<a href="{% url "editar_inscripcion" inscripcion.pk %}">Editar</a>
+        	<a href="{% url "eliminar_inscripcion" inscripcion.pk %}">Eliminar</a>
+      	</td>
+    	</tr>
+  	{% endfor %}
+	</tbody>
+  </table>
+  <a href="{% url 'alta_inscripcion' %}"> Nueva Inscripcion </a>
+{% endblock %}

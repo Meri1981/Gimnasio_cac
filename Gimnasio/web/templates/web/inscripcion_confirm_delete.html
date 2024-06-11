@@ -1,0 +1,19 @@
+{% extends 'web/base.html' %}
+{% load static %}
+
+{% block titulo %}Eliminar{% endblock %}
+
+{% block extra_css %}
+
+{% endblock %}
+
+
+{% block main %}
+  <h2>¿Estás seguro de que deseas eliminar a "{{ object.socio }} de la clase {{object.clase}}"?</h2>
+  <form method="post">
+	{% csrf_token %}
+	<button type="submit">Sí, eliminar</button>
+  </form>
+  <a href="{% url 'listado_inscripcion' %}">Cancelar</a>
+{% endblock %}
+

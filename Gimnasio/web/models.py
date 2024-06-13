@@ -35,3 +35,6 @@ class Inscripcion(models.Model):
     clase = models.ForeignKey(Clase, on_delete=models.CASCADE)
     socio = models.ForeignKey(Socio, on_delete=models.CASCADE)
     fecha_inscripcion = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Clase: {self.clase.nombre} Socio: {self.socio} fecha: {self.fecha_inscripcion}"

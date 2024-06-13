@@ -21,7 +21,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-#8!%zkivhy(m*lt$+-5n20ljzmb5n=y1o031#m27ot5jxep0)!"
+SECRET_KEY = config('SECRET_KEY', default='unsafe-secret-key')
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -75,16 +76,16 @@ WSGI_APPLICATION = "Gimnasio.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+print("DATABASE_ENGINE:", config("DB_ENGINE", default="No encontrado"))
 
-config = Config(RepositoryEnv("./Gimnasio/config.env"))
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "gimnasio_cac",
-        "USER": "postgres",
-        "PASSWORD": "Madj1910",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "ENGINE": config("DB_ENGINE"),
+        "NAME": config("DB_NAME"),
+        "USER": config("DB_USER"),
+        "PASSWORD": config("DB_PASSWORD"),
+        "HOST": config("DB_HOST"),
+        "PORT": config("DB_PORT"),
     }
 }
 

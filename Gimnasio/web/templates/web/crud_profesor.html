@@ -1,0 +1,33 @@
+{% extends 'web/base.html' %} {% load static %} {% block titulo %} Gestión de
+profesores {% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'web/styles/profesores.css' %}" />
+{% endblock %} {% block main %}
+
+<h2>Profesor</h2>
+<div class="container">
+  <div class="col-6">
+    <form action="{% url 'crud_profesor' %}" method="post">
+      {% csrf_token %} {{profesor_form}}
+
+      <div class="d-flex justify-content-center gap-1 m-3">
+        <input type="submit" value="Aceptar" class="btn btn-secondary" />
+        <input
+          type="button"
+          value="Cancelar"
+          class="btn btn-secondary"
+          onclick="window.location.href='{% url 'profesores' %}'"
+        />
+
+        {% if profesor and profesor.id %}
+        <input
+          type="button"
+          value="Eliminar"
+          class="btn btn-danger"
+          onclick='window.location.href="{% url "crud_profesor" profesor_form.id.value 1 %}"'
+        />
+        {% endif %}
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}

@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .forms import *
-from django.shortcuts import redirect
 from django.contrib import messages
 from web.models import *
 from django.views.generic import (
@@ -37,7 +36,7 @@ def registrarse(request):
 
 def lista_clases(request):
     # Gestión de clases. Listado con funcionalidad para agregar, modificar y eliminar clases.
-    contexto = {"clases": Clase.objects.all().values()}
+    contexto = {"clases": Clase.objects.all()}
 
     return render(request, "web/clases.html", contexto)
 
@@ -45,37 +44,38 @@ def lista_clases(request):
 def crud_clase(request, idClase=None, eliminar=None):
     contexto = {}
     if eliminar:
-        clase = Clase.objects.get(id=idClase)
+        clase = get_object_or_404(Clase, id=idClase)
         clase.delete()
         messages.success(request, "Se ha eliminado la Clase")
-
         return redirect("clases")
 
     if request.method == "GET":
-        if idClase == None:
+        if idClase is None:
             contexto["clase_form"] = ClaseForm()
         else:
-            clase = Clase.objects.filter(id=idClase).values()[0]
+            clase = get_object_or_404(Clase, id=idClase)
             contexto["clase_form"] = ClaseForm(
-                {
-                    "id": int(clase["id"]),
-                    "nombre": clase["nombre"],
-                    "profesor": clase["profesor"],
-                    "cupo": int(clase["cupo"]),
-                    "horario": clase["horarios"],
+                initial={
+                    "id": clase.id,
+                    "nombre": clase.nombre,
+                    "profesor": clase.profesor.id if clase.profesor else None,
+                    "cupo": clase.cupo,
+                    "horario": clase.horarios,
                 }
             )
     else:
         form = ClaseForm(request.POST)
         contexto["clase_form"] = form
+
         if form.is_valid():
-            # Si tiene un ID, es una actualización.
-            if form.cleaned_data["id"] != None:
+
+            if form.cleaned_data["id"] is not None:
                 clase = Clase.objects.get(id=form.cleaned_data["id"])
                 mensaje = "Se ha actualizado la clase"
             else:
                 clase = Clase()
                 mensaje = "Se ha creado la clase"
+
             clase.nombre = form.cleaned_data["nombre"]
             clase.profesor = form.cleaned_data["profesor"]
             clase.cupo = form.cleaned_data["cupo"]

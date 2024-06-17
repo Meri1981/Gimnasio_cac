@@ -1,43 +1,38 @@
-{% extends 'web/base.html' %}
-{% load static %}
-
-{% block titulo %}
-    Gestión de clases
-{% endblock %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'web/styles/clases.css' %}">
-{% endblock %}
-
-{% block main %}
+{% extends 'web/base.html' %} {% load static %} {% block titulo %} Gestión de
+clases {% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'web/styles/clases.css' %}" />
+{% endblock %} {% block main %}
 
 <h2>Gestión de clases</h2>
 
 <a href="{% url 'crud_clase' %}">Nueva clase</a>
 
 <table class="table table-striped">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Clase</th>
-        <th scope="col">Profesor</th>
-        <th scope="col">Cupo</th>
-        <th scope="col">Horario</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for clase in clases %}
-      <tr>
-        <th scope="row"> 
-          <a href="{% url 'crud_clase' clase.id %}">{{clase.id}}</a>
-        </th>
-        <td>{{clase.nombre}}</td>
-        <td>{{clase.profesor}}</td>
-        <td>{{clase.cupo}}</td>
-        <td>{{clase.horarios}}</td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Clase</th>
+      <th scope="col">Profesor</th>
+      <th scope="col">Cupo</th>
+      <th scope="col">Horario</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for clase in clases %}
+    <tr>
+      <th scope="row">
+        <a href="{% url 'crud_clase' clase.id %}">{{clase.id}}</a>
+      </th>
+      <td>{{clase.nombre}}</td>
+      <td>
+        {% if clase.profesor %}{{ clase.profesor.nombre }}{% else %}No
+        asignado{% endif %}
+      </td>
+      <td>{{clase.cupo}}</td>
+      <td>{{clase.horarios}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
 {% endblock %}

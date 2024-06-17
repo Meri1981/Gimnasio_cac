@@ -1,7 +1,7 @@
 from django import forms
 from django.core.validators import EmailValidator
 from django.core.exceptions import ValidationError
-from .models import Inscripcion, Clase, Socio
+from .models import Inscripcion, Clase, Socio, Profesor
 
 
 class RegistrarseForm(forms.Form):
@@ -55,8 +55,13 @@ class ClaseForm(forms.Form):
     id.widget.attrs.update({"readonly": True, "class": "form-control"})
     nombre = forms.CharField(label="Nombre", required=True)
     nombre.widget.attrs.update({"class": "form-control"})
-    profesor = forms.CharField(label="Profesor", required=True)
-    profesor.widget.attrs.update({"class": "form-control"})
+    profesor = forms.ModelChoiceField(
+        queryset=Profesor.objects.all(),
+        label="Profesor",
+        empty_label="Selecciona un profesor",
+        required=False,
+        widget=forms.Select(attrs={"class": "form-control"}),
+    )
     cupo = forms.IntegerField(
         label="Cupo",
         required=True,
@@ -71,7 +76,6 @@ class ClaseForm(forms.Form):
         cupo = self.cleaned_data.get("cupo")
         if cupo > 15:
             raise ValidationError("Las clases deben tener 15 integrantes como máximo")
-
         return cupo
 
 
@@ -84,18 +88,10 @@ class SocioForm(forms.Form):
     dni.widget.attrs.update({"class": "form-control"})
     email = forms.CharField(label="Email", required=True)
     email.widget.attrs.update({"class": "form-control"})
-    # plan = forms.CharField(label="Plan")
-    # plan.widget.attrs.update({"class": "form-control"})
 
     PLANES = (("Premium", "Premium"), ("Standard", "Standard"), ("Basic", "Basic"))
     plan = forms.ChoiceField(choices=PLANES)
     plan.widget.attrs.update({"class": "form-control"})
-
-    def clean_nombre(self):
-        if not self.cleaned_data["nombre"].isalpha():
-            raise ValidationError("El nombre solo puede estar compuesto por letras")
-
-        return self.cleaned_data["nombre"]
 
     def clean_dni(self):
         dni = self.cleaned_data.get("dni")
@@ -103,9 +99,6 @@ class SocioForm(forms.Form):
         if not hasattr(self, "instance"):
             if not (1000000 <= self.cleaned_data["dni"] < 100000000):
                 raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
-
-            # if Socio.objects.filter(dni=dni).exists():
-            #    raise ValidationError("El DNI ya está asociado a un socio.")
 
         return dni
 
@@ -128,9 +121,6 @@ class ProfesorForm(forms.Form):
         if not hasattr(self, "instance"):
             if not (1000000 <= self.cleaned_data["dni"] < 100000000):
                 raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
-
-            # if Socio.objects.filter(dni=dni).exists():
-            #    raise ValidationError("El DNI ya está asociado a un socio.")
 
         return dni
 

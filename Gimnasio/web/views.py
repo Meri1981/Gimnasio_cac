@@ -46,7 +46,7 @@ def lista_clases(request):
 
     return render(request, "web/clases.html", contexto)
 
-
+@login_required
 def crud_clase(request, idClase=None, eliminar=None):
     contexto = {}
     if eliminar:
@@ -92,13 +92,13 @@ def crud_clase(request, idClase=None, eliminar=None):
 
     return render(request, "web/crud_clase.html", contexto)
 
-
+@login_required
 def lista_socios(request):
     contexto = {"socios": Socio.objects.all().values()}
 
     return render(request, "web/socios.html", contexto)
 
-
+@login_required
 def crud_socio(request, idSocio=None, eliminar=None):
     contexto = {}
 
@@ -152,13 +152,13 @@ def crud_socio(request, idSocio=None, eliminar=None):
 
     return render(request, "web/crud_socio.html", contexto)
 
-
+@login_required
 def lista_profesores(request):
     contexto = {"profesores": Profesor.objects.all().values()}
 
     return render(request, "web/profesores.html", contexto)
 
-
+@login_required
 def crud_profesor(request, idProfesor=None, eliminar=None):
     contexto = {}
 

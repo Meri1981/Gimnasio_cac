@@ -2,13 +2,22 @@ from django.db import models
 from Gimnasio import settings
 
 class Clase(models.Model):
+    HORARIOS = [
+        ('MAÑANA', 'mañana'),
+        ('TARDE', 'tarde'),
+        
+    ]
     nombre = models.CharField("Nombre", max_length=100)
-    profesor = models.CharField("Profesor", max_length=100)
+    profesor = models.ForeignKey('Profesor', on_delete=models.CASCADE, null=True, blank=True)  # Cambiado de CharField a ForeignKey
     cupo = models.SmallIntegerField("Cupo")
-    horarios = models.CharField("Horario", max_length=100)
+    horarios =models.CharField(
+        max_length=10,
+        choices=HORARIOS,
+        default='TARDE',
+    )
 
     def __str__(self):
-        return f"{self.nombre} - {self.profesor} ({self.horarios})"
+        return f"{self.nombre} -{self.horarios} - {self.profesor.user.username if self.profesor else '---'}"
 
 
 class Socio(models.Model):
@@ -45,7 +54,7 @@ class Profesor(models.Model):
     )
 
     dni = models.CharField("Dni", max_length=8)
-    telefono = models.CharField("Plan", max_length=15)
+    telefono = models.CharField("Telefono", max_length=15)
 
     def __str__(self):
         return f"{self.user.first_name} {self.user.first_name} - {self.dni}"

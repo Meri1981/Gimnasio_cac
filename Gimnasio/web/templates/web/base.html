@@ -11,6 +11,7 @@
       integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
       crossorigin="anonymous"
     />
+    <script src="https://kit.fontawesome.com/4c9feabc71.js" crossorigin="anonymous"></script>
     <title>{% block titulo %}{% endblock %}</title>
 
     {% block extra_css %}{% endblock %}
@@ -57,7 +58,19 @@
                   >Inscripciones</a
                 >
               </li>
+              <li class="nav-item">
+                {% if user.is_authenticated %}
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <button type="submit"><i class="fa-solid fa-right-from-bracket"></i>Logout</button>
+                </form>
+           
+              {% else %}
+              <a href="{% url 'login' %}"><i class="fas fa-user"></i>login</a>
+              {% endif %}
+              </li>
             </ul>
+
           </div>
         </div>
       </nav>

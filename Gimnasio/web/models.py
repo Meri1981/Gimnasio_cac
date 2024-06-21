@@ -1,5 +1,5 @@
 from django.db import models
-
+from Gimnasio import settings
 
 class Clase(models.Model):
     nombre = models.CharField("Nombre", max_length=100)
@@ -12,23 +12,43 @@ class Clase(models.Model):
 
 
 class Socio(models.Model):
-    nombre = models.CharField("Nombre", max_length=40)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
+    PLAN = [
+        ('BASICO', 'Básico'),
+        ('PREMIUM', 'Premium'),
+        ('ESTANDAR', 'Estandar'),
+    ]
+
     dni = models.CharField("Dni", max_length=8)
-    email = models.EmailField("Email", max_length=30)
-    plan = models.CharField("Plan", max_length=10)
+    plan = models.CharField(
+        max_length=10,
+        choices=PLAN,
+        default='BASICO',
+    )
 
     def __str__(self):
-        return f"{self.nombre} ({self.dni})"
+        return f"{self.user.first_name} {self.user.first_name} - {self.dni}"
 
 
 class Profesor(models.Model):
-    nombre = models.CharField("Nombre", max_length=40)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True
+    )
+
     dni = models.CharField("Dni", max_length=8)
-    email = models.EmailField("Email", max_length=30)
     telefono = models.CharField("Plan", max_length=15)
 
     def __str__(self):
-        return f"{self.nombre} {self.dni}"
+        return f"{self.user.first_name} {self.user.first_name} - {self.dni}"
 
 
 class Inscripcion(models.Model):

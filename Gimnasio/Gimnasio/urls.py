@@ -17,9 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from web import views
-from web.admin import mi_adminsite
+from django.conf import settings
 
 urlpatterns = [
-    path('admin/', mi_adminsite.urls),
-    path('web/', include('web.urls'))
+    path('admin/', admin.site.urls), 
+    path('web/', include('web.urls')),  # Incluye las URLs de la aplicación web
+
 ]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        path('__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns
+

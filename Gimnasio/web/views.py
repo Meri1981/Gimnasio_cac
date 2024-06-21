@@ -12,12 +12,17 @@ from django.views.generic import (
     DeleteView,
 )
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
 def index(request):
     context = {"gimnasio": "Gimnasio CaC"}
     return render(request, "web/index.html", context)
+
+
 
 
 def registrarse(request):
@@ -34,7 +39,7 @@ def registrarse(request):
             return redirect("index")
     return render(request, "web/registrarse.html", contexto)
 
-
+@login_required
 def lista_clases(request):
     # Gestión de clases. Listado con funcionalidad para agregar, modificar y eliminar clases.
     contexto = {"clases": Clase.objects.all().values()}
@@ -209,26 +214,26 @@ def crud_profesor(request, idProfesor=None, eliminar=None):
     return render(request, "web/crud_profesor.html", contexto)
 
 
-class InscripcionListView(ListView):
+class InscripcionListView(LoginRequiredMixin,ListView):
     model = Inscripcion
     template_name = "web/listado_inscripcion.html"
 
 
-class InscripcionCreateView(CreateView):
+class InscripcionCreateView(LoginRequiredMixin,CreateView):
     model = Inscripcion
     form_class = InscripcionForm
     template_name = "web/inscripcion_form.html"
     success_url = reverse_lazy("listado_inscripcion")
 
 
-class InscripcionUpdateView(UpdateView):
+class InscripcionUpdateView(LoginRequiredMixin, UpdateView):
     model = Inscripcion
     form_class = InscripcionForm
     template_name = "web/inscripcion_form.html"
     success_url = reverse_lazy("listado_inscripcion")
 
 
-class InscripcionDeleteView(DeleteView):
+class InscripcionDeleteView(LoginRequiredMixin, DeleteView):
     model = Inscripcion
     template_name = "web/inscripcion_confirm_delete.html"
     success_url = reverse_lazy("listado_inscripcion")

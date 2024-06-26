@@ -23,6 +23,7 @@
         <th scope="col">Profesor</th>
         <th scope="col">Cupo</th>
         <th scope="col">Horario</th>
+        <th scope="col">Inscribirse</th>
       </tr>
     </thead>
     <tbody>
@@ -35,6 +36,7 @@
         <td>{{clase.profesor}}</td>
         <td>{{clase.cupo}}</td>
         <td>{{clase.horarios}}</td>
+        <td><a href="{% url 'alta_inscripcion' %}"><button class="btn btn-primary">Inscribirse</button></a></td>
       </tr>
       {% endfor %}
     </tbody>

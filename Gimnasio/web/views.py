@@ -12,7 +12,7 @@ from django.views.generic import (
     DeleteView,
 )
 from django.urls import reverse_lazy
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -46,7 +46,8 @@ def lista_clases(request):
 
     return render(request, "web/clases.html", contexto)
 
-@login_required
+
+@permission_required('web.add_clase')
 def crud_clase(request, idClase=None, eliminar=None):
     contexto = {}
     if eliminar:
@@ -98,8 +99,13 @@ def lista_socios(request):
 
     return render(request, "web/socios.html", contexto)
 
-@login_required
+
+@login_required(login_url='/accounts/login/') 
+@permission_required('web.add_socio',login_url='/accounts/login/', raise_exception=True)
+@permission_required('web.change_socio', raise_exception=True)
+@permission_required('web.delete_socio', raise_exception=True)
 def crud_socio(request, idSocio=None, eliminar=None):
+
     contexto = {}
 
     if idSocio:

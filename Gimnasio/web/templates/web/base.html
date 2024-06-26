@@ -41,9 +41,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'index' %}">Inicio</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'registrarse' %}">Registro</a>
-              </li>
+
+              {% if user.is_authenticated %}
+
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'clases' %}">Clases</a>
               </li>
@@ -58,6 +58,7 @@
                   >Inscripciones</a
                 >
               </li>
+                 {% endif %}
               <li class="nav-item">
                 {% if user.is_authenticated %}
                 <form method="post" action="{% url 'logout' %}">
@@ -66,6 +67,9 @@
                 </form>
            
               {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'registrarse' %}">Registrarse</a>
+              </li>
               <a href="{% url 'login' %}"><i class="fas fa-user"></i>login</a>
               {% endif %}
               </li>

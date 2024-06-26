@@ -79,12 +79,12 @@ WSGI_APPLICATION = "Gimnasio.wsgi.application"
 config = Config(RepositoryEnv("./Gimnasio/config.env"))
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "gimnasio_cac",
-        "USER": "postgres",
-        "PASSWORD": "Madj1910",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
+        "ENGINE": config('DB_ENGINE'),
+        "NAME": config('DB_NAME'),
+        "USER": config('DB_USER'),
+        "PASSWORD": config('DB_PASSWORD'),
+        "HOST": config('DB_HOST'),
+        "PORT": config('DB_PORT'),
     }
 }
 

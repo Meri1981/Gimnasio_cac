@@ -1,0 +1,17 @@
+{% extends 'web/base.html' %} {% load static %} {% block titulo %} Gestión de
+socios {% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'web/styles/socios.css' %}" />
+{% endblock %} {% block main %}
+
+<h2> Crear Socio</h2>
+<div class="container">
+  <div class="col-6">
+     
+    <form method="POST" action="{% url 'alta_socio' %}">
+        {% csrf_token %}
+        {{alta_socio_form.as_p }}
+        <input type="submit">
+    </form>
+  </div>
+</div>
+{% endblock %}

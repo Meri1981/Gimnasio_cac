@@ -23,9 +23,9 @@ profesores {% endblock %} {% block extra_css %}
       <th scope="row">
         <a href="{% url 'crud_profesor' profesor.id %}">{{profesor.id}}</a>
       </th>
-      <td>{{profesor.nombre}}</td>
+      <td>{{profesor.user.first_name}} {{profesor.user.last_name}}</td>
       <td>{{profesor.dni}}</td>
-      <td>{{profesor.email}}</td>
+      <td>{{profesor.user.email}}</td>
       <td>{{profesor.telefono}}</td>
     </tr>
     {% endfor %}

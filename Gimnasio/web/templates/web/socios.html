@@ -5,7 +5,7 @@ socios {% endblock %} {% block extra_css %}
 
 <h2>Gestión de socios</h2>
 
-<a href="{% url 'crud_socio' %}">Nuevo socio</a>
+<a href="{% url 'alta_socio' %}">Nuevo socio</a>
 
 <table class="table table-striped">
   <thead>
@@ -15,6 +15,7 @@ socios {% endblock %} {% block extra_css %}
       <th scope="col">Dni</th>
       <th scope="col">Email</th>
       <th scope="col">Plan</th>
+      <th scope="col">Acciones</th>
     </tr>
   </thead>
   <tbody>
@@ -23,10 +24,12 @@ socios {% endblock %} {% block extra_css %}
       <th scope="row">
         <a href="{% url 'crud_socio' socio.id %}">{{socio.id}}</a>
       </th>
-      <td>{{socio.nombre}}</td>
+      <td>{{socio.user.first_name}} {{socio.user.last_name}}</td>
       <td>{{socio.dni}}</td>
-      <td>{{socio.email}}</td>
+      <td>{{socio.user.email}}</td>
       <td>{{socio.plan}}</td>
+      <td><a href="{% url 'eliminar_socio' socio.id  %}"><button class="btn btn-primary">Eliminar</button></a>
+      <a href="{% url 'crud_socio' socio.id  %}"><button class="btn btn-primary">Editar</button></a></td>
     </tr>
     {% endfor %}
   </tbody>

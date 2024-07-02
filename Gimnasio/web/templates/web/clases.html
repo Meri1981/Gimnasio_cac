@@ -11,7 +11,7 @@
 
 {% block main %}
 
-<h2>Gestión de clases</h2>
+<h2>Clases</h2>
 
 <a href="{% url 'crud_clase' %}">Nueva clase</a>
 
@@ -23,7 +23,9 @@
         <th scope="col">Profesor</th>
         <th scope="col">Cupo</th>
         <th scope="col">Horario</th>
+      {% if perms.web.add_inscripcion %}
         <th scope="col">Inscribirse</th>
+        {% endif %}
       </tr>
     </thead>
     <tbody>
@@ -36,7 +38,9 @@
         <td>{{clase.profesor}}</td>
         <td>{{clase.cupo}}</td>
         <td>{{clase.horarios}}</td>
+          {% if perms.web.add_inscripcion %}
         <td><a href="{% url 'alta_inscripcion' %}"><button class="btn btn-primary">Inscribirse</button></a></td>
+        {% endif %}
       </tr>
       {% endfor %}
     </tbody>

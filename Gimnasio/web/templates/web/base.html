@@ -47,18 +47,24 @@
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'clases' %}">Clases</a>
               </li>
+                {% if perms.web.view_socio %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'socios' %}">Socios</a>
               </li>
+                {% endif %}
+                                {% if perms.web.view_profesor %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'profesores' %}">Profesores</a>
               </li>
+              {% endif %}
+                              {% if perms.web.view_inscripcion %}
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'listado_inscripcion' %}"
                   >Inscripciones</a
                 >
               </li>
-                 {% endif %}
+                  {% endif %}
+                {% endif %}
               <li class="nav-item">
                 {% if user.is_authenticated %}
                 <form method="post" action="{% url 'logout' %}">

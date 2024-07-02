@@ -42,7 +42,7 @@ class Socio(models.Model):
     )
 
     def __str__(self):
-        return f"{self.user.first_name} {self.user.first_name} - {self.dni}"
+        return f" Nombre: {self.user.first_name} {self.user.first_name} - DNI:{self.dni}"
 
 
 class Profesor(models.Model):

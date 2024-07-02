@@ -122,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = "es-ar"
+LANGUAGE_CODE = 'es-ar'
 
 TIME_ZONE = "UTC"
 
@@ -146,12 +146,12 @@ LOGOUT_REDIRECT_URL = '/web'
 LOGIN_URL = '/web/accounts/login/'
 
 # Configuración para el backend de correo
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'olympia.equipo2@gmail.com'
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 465
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'olympia.equipo2@gmail.com'
-EMAIL_HOST_PASSWORD = config("EMAIL_PASS")
-DEFAULT_FROM_EMAIL = 'tu_email@gmail.com'
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL
+EMAIL_HOST_PASSWORD = 'yroz tbad cdnv zknk'
 
 AUTH_USER_MODEL = 'auth.User'

@@ -146,12 +146,12 @@ LOGOUT_REDIRECT_URL = '/web'
 LOGIN_URL = '/web/accounts/login/'
 
 # Configuración para el backend de correo
-DEFAULT_FROM_EMAIL = 'olympia.equipo2@gmail.com'
+DEFAULT_FROM_EMAIL = "Gimnasio CaC"
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = DEFAULT_FROM_EMAIL
-EMAIL_HOST_PASSWORD = 'yroz tbad cdnv zknk'
+EMAIL_HOST_USER = config('EM_EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('yroz tbad cdnv zknk')
 
 AUTH_USER_MODEL = 'auth.User'

@@ -79,24 +79,49 @@ class ClaseForm(forms.Form):
         return cupo
 
 
-class SocioForm(forms.Form):
-    user = forms.ModelChoiceField(queryset=User.objects.all(), label="Usuario", required=True)
-    user.widget.attrs.update({"class": "form-control", "readonly": True})
-    
-    dni = forms.IntegerField(label="Dni", required=True)
-    dni.widget.attrs.update({"class": "form-control"})
+class SocioForm(forms.ModelForm):
+    class Meta:
+        model = Socio
+        fields = ['user', 'dni', 'plan']
 
-    PLANES = (("Premium", "Premium"), ("Standard", "Standard"), ("Basic", "Basic"))
+    PLANES = (
+        ('BASICO', 'Básico'),
+        ('PREMIUM', 'Premium'),
+        ('ESTANDAR', 'Estandar'),
+    )
     plan = forms.ChoiceField(choices=PLANES)
-    plan.widget.attrs.update({"class": "form-control"})
+
+    def __init__(self, *args, **kwargs):
+        super(SocioForm, self).__init__(*args, **kwargs)
+        self.fields['dni'].widget.attrs.update({"class": "form-control"})
+        self.fields['plan'].widget.attrs.update({"class": "form-control"})
+
+        if self.instance and self.instance.pk:
+            self.fields['user'].widget = forms.HiddenInput()
+        else:
+            self.fields['user'].queryset = User.objects.all()
+            self.fields['user'].widget.attrs.update({"class": "form-control"})
 
     def clean_dni(self):
         dni = self.cleaned_data.get("dni")
+        if not isinstance(dni, int):
+            try:
+                dni = int(dni)
+            except ValueError:
+                raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
 
         if not (1000000 <= dni < 100000000):
             raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
-
         return dni
+        dni = self.cleaned_data.get("dni")
+        if not (1000000 <= dni < 100000000):
+            raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
+        return dni
+
+    def clean_user(self):
+        if self.instance and self.instance.pk:
+            return self.instance.user
+        return self.cleaned_data['user']
 
 class ProfesorForm(forms.Form):
     user = forms.ModelChoiceField(queryset=User.objects.all(), label="Usuario", required=True)
@@ -110,29 +135,6 @@ class ProfesorForm(forms.Form):
             raise forms.ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
         
         return dni
-# class ProfesorForm(forms.Form):
-#     id = forms.IntegerField(label="id", required=False)
-#     id.widget.attrs.update({"readonly": True, "class": "form-control"})
-#     nombre = forms.CharField(label="Nombre", required=True)
-#     nombre.widget.attrs.update({"class": "form-control"})
-#     dni = forms.IntegerField(label="Dni", required=True)
-#     dni.widget.attrs.update({"class": "form-control"})
-#     email = forms.CharField(label="Email", required=True)
-#     email.widget.attrs.update({"class": "form-control"})
-#     telefono = forms.CharField(label="Telefono")
-#     telefono.widget.attrs.update({"class": "form-control"})
-
-#     def clean_dni(self):
-#         dni = self.cleaned_data.get("dni")
-
-#         if not hasattr(self, "instance"):
-#             if not (1000000 <= self.cleaned_data["dni"] < 100000000):
-#                 raise ValidationError("El DNI debe ser un número de 7 a 8 dígitos.")
-
-#             # if Socio.objects.filter(dni=dni).exists():
-#             #    raise ValidationError("El DNI ya está asociado a un socio.")
-
-#         return dni
 
 
 class InscripcionForm(forms.ModelForm):

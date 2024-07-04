@@ -6,26 +6,20 @@ socios {% endblock %} {% block extra_css %}
 <h2>Socio</h2>
 <div class="container">
   <div class="col-6">
-    <form action="{% url 'crud_socio' %}" method="post">
+     {% if user_readonly %}
+      <div class="form-group">
+        <label for="id_user">Usuario</label>
+        <input type="text" id="id_user" class="form-control" value="{{ user_readonly }}" readonly>
+      </div>
+      {% endif %}
+
+
+    <form action="{% url 'crud_socio' socio.id %}" method="post">
       {% csrf_token %} {{socio_form}}
 
       <div class="d-flex justify-content-center gap-1 m-3">
         <input type="submit" value="Aceptar" class="btn btn-secondary" />
-        <input
-          type="button"
-          value="Cancelar"
-          class="btn btn-secondary"
-          onclick="window.location.href='{% url 'socios' %}'"
-        />
-
-        {% if socio_form.id.value != None%}
-        <input
-          type="button"
-          value="Eliminar"
-          class="btn btn-danger"
-          onclick='window.location.href="{% url "crud_socio" socio_form.id.value 1 %}"'
-        />
-        {% endif %}
+        <input type="button" value="Cancelar" class="btn btn-secondary" onclick="window.location.href='{% url 'socios' %}'" />
       </div>
     </form>
   </div>

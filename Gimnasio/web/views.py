@@ -95,6 +95,7 @@ def crud_clase(request, idClase=None, eliminar=None):
     return render(request, "web/crud_clase.html", contexto)
 
 @login_required
+@permission_required('web.view_socio')
 def lista_socios(request):
     socios = Socio.objects.select_related('user')
     contexto = {"socios": socios}
@@ -106,7 +107,6 @@ from django.db import IntegrityError
 
 @login_required(login_url='/accounts/login/')
 @permission_required('web.add_socio', login_url='/accounts/login/', raise_exception=True)
-@permission_required('web.change_socio', raise_exception=True)
 def alta_socio(request):
     contexto = {}
     
@@ -136,46 +136,26 @@ def alta_socio(request):
 @login_required(login_url='/accounts/login/')
 @permission_required('web.add_socio', login_url='/accounts/login/', raise_exception=True)
 @permission_required('web.change_socio', raise_exception=True)
-def crud_socio(request, idSocio=None, eliminar=None):
-    contexto = {}
-
+def crud_socio(request, idSocio=None):
     if idSocio:
-        try:
-            socio = Socio.objects.get(id=idSocio)
-        except Socio.DoesNotExist:
-            return redirect("socios")
-
-    if request.method == "GET":
-        if socio is None:
-            contexto["socio_form"] = SocioForm()
-        else:
-            contexto["socio_form"] = SocioForm(initial={
-                'user': socio.user,
-                'dni': socio.dni,
-                'plan': socio.plan
-            })
+        socio = get_object_or_404(Socio, id=idSocio)
     else:
-        form = SocioForm(request.POST)
-        contexto["socio_form"] = form
+        socio = None
+
+    if request.method == "POST":
+        form = SocioForm(request.POST, instance=socio)
         if form.is_valid():
-            try:
-                if socio is None:
-                    socio = Socio()
-                    socio.user = form.cleaned_data["user"]
-                    mensaje = "Se ha creado el socio"
-                else:
-                    mensaje = "Se ha actualizado el socio"
+            socio = form.save()
+            messages.success(request, "Se ha actualizado el socio" if idSocio else "Se ha creado un nuevo socio")
+            return redirect("socios")
+    else:
+        form = SocioForm(instance=socio)
 
-                
-                socio.dni = form.cleaned_data["dni"]
-                socio.plan = form.cleaned_data["plan"]
-                socio.save()
-                messages.success(request, mensaje)
-
-                return redirect("socios")
-            except IntegrityError:
-                form.add_error('user', 'Este usuario ya está asignado a otro socio.')
-
+    contexto = {
+        "socio_form": form,
+        "socio": socio,
+        "user_readonly": socio.user if socio else None
+    }
     return render(request, "web/crud_socio.html", contexto)
 
 
@@ -194,6 +174,7 @@ def eliminar_socio(request, idSocio):
     return redirect('socios')
 
 @login_required
+@permission_required('web.view_profesores', login_url='/accounts/login/', raise_exception=True)
 def lista_profesores(request):
     profesores = Profesor.objects.select_related('user')
     contexto = {"profesores": profesores}
